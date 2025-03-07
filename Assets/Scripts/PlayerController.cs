@@ -6,25 +6,33 @@ public class PlayerController : MonoBehaviour
     public float speed = 0.5f;  // Base movement speed of the ball
     public float dragForce = 0.65f;  // Base drag to slow the ball down
     public int numOfPickups { get; private set; }
+    public int numOfLives { get; private set; }
     public UnityEvent<PlayerController> OnPickupCollected;
 
     private Rigidbody ball; // Reference to ball's rigibody
     private Camera camera;  // Reference to the main camera
-    
+    private UIController UI;
+
     void Start()
     {
         ball = GetComponent<Rigidbody>();
         camera = Camera.main;
         // Add drag to ball properties
         ball.linearDamping = dragForce;
+        UI = FindFirstObjectByType<UIController>();
+
+        numOfLives = 3;
 
         //// Logs for debugging
         //InvokeRepeating("DebugLog", 0, 1);
     }
-    
+
     void Update()
     {
-        Move();
+        if (numOfLives != 0)
+        {
+            Move();
+        }
     }
 
     void Move()
@@ -43,7 +51,19 @@ public class PlayerController : MonoBehaviour
     public void Pickup()
     {
         numOfPickups++;
+        if (numOfPickups == 2)
+        {
+            numOfLives++;
+            numOfPickups = 0;
+            UI.UpdateLifeText(this);
+        }
         OnPickupCollected.Invoke(this);
+    }
+
+    public void Die()
+    {
+        numOfLives--;
+        UI.UpdateLifeText(this);
     }
 
     void DebugLog(string msg)
