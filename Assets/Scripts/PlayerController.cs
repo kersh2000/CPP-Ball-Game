@@ -11,8 +11,10 @@ public class PlayerController : MonoBehaviour
     public UnityEvent<PlayerController> OnPickupCollected;
 
     private Rigidbody ball; // Reference to ball's rigibody
-    private Camera camera;  // Reference to the main camera
+    private new Camera camera;  // Reference to the main camera
     private UIController UI;
+    private float respawnThreshold;
+    private Vector3 respawnPoint;
 
     void Start()
     {
@@ -21,6 +23,8 @@ public class PlayerController : MonoBehaviour
         // Add drag to ball properties
         ball.linearDamping = dragForce;
         UI = FindFirstObjectByType<UIController>();
+        respawnThreshold = GameObject.FindWithTag("Threshold").transform.position.y;
+        respawnPoint = GameObject.FindWithTag("Spawn").transform.position;
 
         numOfLives = 3;
         score = 0;
@@ -39,6 +43,11 @@ public class PlayerController : MonoBehaviour
 
     void Move()
     {
+        if (transform.position.y < respawnThreshold)
+        {
+            Die();
+            return;
+        }
         // Get directional input
         float verticalAxis = Input.GetAxis("Vertical"); // -1 to 1 of vertcal input (S to W)
         float horizontalAxis = Input.GetAxis("Horizontal"); // -1 to 1 of horizontal input (A to D)
@@ -53,6 +62,7 @@ public class PlayerController : MonoBehaviour
     public void Pickup()
     {
         numOfPickups++;
+        UI.UpdatePickupText(numOfPickups);
         score += 10;
         if (numOfPickups == 2)
         {
@@ -64,10 +74,11 @@ public class PlayerController : MonoBehaviour
         OnPickupCollected.Invoke(this);
     }
 
-    public void Die()
+    void Die()
     {
         numOfLives--;
         UI.UpdateLifeText(numOfLives);
+        transform.position = respawnPoint;
     }
 
     void DebugLog(string msg)

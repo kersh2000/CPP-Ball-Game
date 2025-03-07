@@ -13,9 +13,9 @@ public class UIController : MonoBehaviour
         scoreText = GameObject.FindWithTag("Score").GetComponent<TextMeshProUGUI>();
     }
 
-    public void UpdatePickupText(PlayerController player)
+    public void UpdatePickupText(int count)
     {
-        pickupText.text = player.numOfPickups.ToString();
+        pickupText.text = count.ToString();
     }
 
     public void UpdateLifeText(int lives)

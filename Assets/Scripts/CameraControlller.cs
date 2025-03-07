@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 
 public class CameraControlller : MonoBehaviour
@@ -21,9 +22,17 @@ public class CameraControlller : MonoBehaviour
 
         // Delay the new direction vector 
         currentDirection = Vector3.Slerp(currentDirection, targetDirection, Time.deltaTime * turnSpeed);
+        Vector3 targetPosition;
 
-        // Calcululate new camera position by adding the ball's position by the multiple of the change in direction by the offset (camera always behind the ball)
-        Vector3 targetPosition = ball.position + Quaternion.LookRotation(targetDirection) * offset;
+        if (targetDirection != Vector3.zero)
+        {
+            // Calcululate new camera position by adding the ball's position by the multiple of the change in direction by the offset (camera always behind the ball)
+            targetPosition = ball.position + Quaternion.LookRotation(targetDirection) * offset;
+        }
+        else
+        {
+            targetPosition = ball.position + offset;
+        }
 
         // Transition to new position
         transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * turnSpeed);
