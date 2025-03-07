@@ -1,9 +1,12 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PlayerController : MonoBehaviour
 {
     public float speed = 0.5f;  // Base movement speed of the ball
     public float dragForce = 0.65f;  // Base drag to slow the ball down
+    public int numOfPickups { get; private set; }
+    public UnityEvent<PlayerController> OnPickupCollected;
 
     private Rigidbody ball; // Reference to ball's rigibody
     private Camera camera;  // Reference to the main camera
@@ -21,6 +24,11 @@ public class PlayerController : MonoBehaviour
     
     void Update()
     {
+        Move();
+    }
+
+    void Move()
+    {
         // Get directional input
         float verticalAxis = Input.GetAxis("Vertical"); // -1 to 1 of vertcal input (S to W)
         float horizontalAxis = Input.GetAxis("Horizontal"); // -1 to 1 of horizontal input (A to D)
@@ -32,9 +40,15 @@ public class PlayerController : MonoBehaviour
         ball.AddForce(speed * direction.x, 0, speed * direction.z);
     }
 
-    void DebugLog()
+    public void Pickup()
+    {
+        numOfPickups++;
+        OnPickupCollected.Invoke(this);
+    }
+
+    void DebugLog(string msg)
     {
         // Output ball's velocity
-        Debug.Log("Velocity: " + ball.linearVelocity);
+        Debug.Log(msg);
     }
 }
