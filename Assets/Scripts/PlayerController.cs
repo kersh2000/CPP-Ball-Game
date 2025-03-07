@@ -12,6 +12,9 @@ public class PlayerController : MonoBehaviour
         ball = GetComponent<Rigidbody>();
         // Add drag to ball properties
         ball.linearDamping = dragForce;
+
+        //// Logs for debugging
+        //InvokeRepeating("DebugLog", 0, 1);
     }
     
     void Update()
@@ -22,5 +25,11 @@ public class PlayerController : MonoBehaviour
 
         // Add force to ball
         ball.AddForce(speed * horizontalAxis, 0, speed * verticalAxis);
+    }
+
+    void DebugLog()
+    {
+        // Output ball's velocity
+        Debug.Log("Velocity: " + ball.linearVelocity);
     }
 }
