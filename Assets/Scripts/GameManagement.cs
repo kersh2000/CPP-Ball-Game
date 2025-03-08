@@ -6,7 +6,7 @@ public class GameManagement : MonoBehaviour
     public static GameManagement manager;
 
     private int sceneNumber;
-    private int scenesLength = 2;
+    private int scenesLength;
 
     void Awake()
     {
@@ -18,6 +18,7 @@ public class GameManagement : MonoBehaviour
             {
             Destroy(gameObject);
         }
+        scenesLength = SceneManager.sceneCountInBuildSettings;
     }
 
     void Start()

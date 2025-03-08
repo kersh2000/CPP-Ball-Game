@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour
     private Rigidbody ball; // Reference to ball's rigibody
     private new Camera camera;  // Reference to the main camera
     private UIController UI;
+    private CameraControlller cameraController;
     private float respawnThreshold;
     private Vector3 respawnPoint;
 
@@ -22,8 +23,13 @@ public class PlayerController : MonoBehaviour
         // Add drag to ball properties
         ball.linearDamping = dragForce;
         UI = FindFirstObjectByType<UIController>();
+        cameraController = FindFirstObjectByType<CameraControlller>();
         respawnThreshold = GameObject.FindWithTag("Threshold").transform.position.y;
         respawnPoint = GameObject.FindWithTag("Spawn").transform.position;
+
+        // Spawn player and camera at spawn location
+        transform.position = respawnPoint;
+        camera.transform.position = respawnPoint + cameraController.offset;
 
         numOfLives = 3;
         score = 0;
@@ -67,7 +73,7 @@ public class PlayerController : MonoBehaviour
     {
         numOfPickups++;
         score += 10;
-        if (numOfPickups == 2)
+        if (numOfPickups == 10)
         {
             numOfLives++;
             numOfPickups = 0;
