@@ -32,6 +32,11 @@ public class GameManagement : MonoBehaviour
         ResetStats();
     }
 
+    private void Update()
+    {
+        RenderSettings.skybox.SetFloat("_Rotation", Time.time);
+    }
+
     public void NextScene()
     {
         sceneNumber++;
