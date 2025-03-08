@@ -74,6 +74,7 @@ public class GameManagement : MonoBehaviour
     public void DecreaseLife()
     {
         numOfLives--;
+        score = (score >= 30) ? score - 30 : 0;
     }
 
     private void DebugLog(string msg)

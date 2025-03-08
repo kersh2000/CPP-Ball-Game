@@ -79,6 +79,7 @@ public class PlayerController : MonoBehaviour
     {
         GameManagement.manager.DecreaseLife();
         UI.UpdateLifeText(GameManagement.manager.numOfLives);
+        UI.UpdateScoreText(GameManagement.manager.score);
         // Respawn
         transform.position = respawnPoint;
         // Resets forces and velocity
