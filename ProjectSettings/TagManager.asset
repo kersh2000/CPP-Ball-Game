@@ -9,6 +9,7 @@ TagManager:
   - Score
   - Spawn
   - Threshold
+  - Timer
   layers:
   - Default
   - TransparentFX

@@ -6,6 +6,7 @@ public class PlayerController : MonoBehaviour
     public float speed = 0.5f;  // Base movement speed of the ball
     public float dragForce = 0.65f;  // Base drag to slow the ball down
 
+    private float remainingTime;
     private Rigidbody ball; // Reference to ball's rigibody
     private new Camera camera;  // Reference to the main camera
     private UIController UI;
@@ -28,6 +29,7 @@ public class PlayerController : MonoBehaviour
         transform.position = respawnPoint;
         camera.transform.position = respawnPoint + cameraController.offset;
 
+        remainingTime = 30;
         UI.UpdateLifeText(GameManagement.manager.numOfLives);
         UI.UpdateScoreText(GameManagement.manager.score);
         UI.UpdatePickupText(GameManagement.manager.numOfPickups);
@@ -40,6 +42,15 @@ public class PlayerController : MonoBehaviour
     {
         if (GameManagement.manager.numOfLives != 0)
         {
+            remainingTime -= Time.deltaTime;
+            int seconds = Mathf.FloorToInt(remainingTime % 60);
+            UI.UpdateTimerText(seconds);
+            if (remainingTime <= 0)
+            {
+                Die();
+                remainingTime = 30;
+                return;
+            }
             Move();
         } 
         else
