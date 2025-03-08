@@ -5,9 +5,6 @@ public class PlayerController : MonoBehaviour
 {
     public float speed = 0.5f;  // Base movement speed of the ball
     public float dragForce = 0.65f;  // Base drag to slow the ball down
-    public int numOfPickups { get; private set; }
-    public int numOfLives { get; private set; }
-    public int score { get; private set; }
 
     private Rigidbody ball; // Reference to ball's rigibody
     private new Camera camera;  // Reference to the main camera
@@ -31,8 +28,9 @@ public class PlayerController : MonoBehaviour
         transform.position = respawnPoint;
         camera.transform.position = respawnPoint + cameraController.offset;
 
-        numOfLives = 3;
-        score = 0;
+        UI.UpdateLifeText(GameManagement.manager.numOfLives);
+        UI.UpdateScoreText(GameManagement.manager.score);
+        UI.UpdatePickupText(GameManagement.manager.numOfPickups);
 
         //// Logs for debugging
         //InvokeRepeating("DebugLog", 0, 1);
@@ -40,7 +38,7 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        if (numOfLives != 0)
+        if (GameManagement.manager.numOfLives != 0)
         {
             Move();
         } 
@@ -71,22 +69,16 @@ public class PlayerController : MonoBehaviour
 
     public void Pickup()
     {
-        numOfPickups++;
-        score += 10;
-        if (numOfPickups == 10)
-        {
-            numOfLives++;
-            numOfPickups = 0;
-            UI.UpdateLifeText(numOfLives);
-        }
-        UI.UpdateScoreText(score);
-        UI.UpdatePickupText(numOfPickups);
+        GameManagement.manager.IncreasePickup();
+        UI.UpdateLifeText(GameManagement.manager.numOfLives);
+        UI.UpdateScoreText(GameManagement.manager.score);
+        UI.UpdatePickupText(GameManagement.manager.numOfPickups);
     }
 
     void Die()
     {
-        numOfLives--;
-        UI.UpdateLifeText(numOfLives);
+        GameManagement.manager.DecreaseLife();
+        UI.UpdateLifeText(GameManagement.manager.numOfLives);
         // Respawn
         transform.position = respawnPoint;
         // Resets forces and velocity

@@ -4,6 +4,11 @@ using UnityEngine.SceneManagement;
 public class GameManagement : MonoBehaviour
 {
     public static GameManagement manager;
+    public int lives;
+
+    public int numOfPickups { get; private set; }
+    public int numOfLives { get; private set; }
+    public int score { get; private set; }
 
     private int sceneNumber;
     private int scenesLength;
@@ -21,14 +26,10 @@ public class GameManagement : MonoBehaviour
         scenesLength = SceneManager.sceneCountInBuildSettings;
     }
 
-    void Start()
+    private void Start()
     {
         sceneNumber = 0;
-    }
-
-    void Update()
-    {
-        
+        ResetStats();
     }
 
     public void NextScene()
@@ -37,6 +38,7 @@ public class GameManagement : MonoBehaviour
         if (sceneNumber > scenesLength - 1)
         {
             sceneNumber = 0;
+            ResetStats();
         }
         SceneManager.LoadScene(sceneNumber);
     }
@@ -45,10 +47,36 @@ public class GameManagement : MonoBehaviour
     {
         SceneManager.LoadScene(givenSceneName);
         sceneNumber = SceneUtility.GetBuildIndexByScenePath(givenSceneName);
-        DebugLog("Changed to scene '" + givenSceneName + "' of index: " + sceneNumber.ToString());
+        if (givenSceneName == "Main Scene")
+        {
+            ResetStats();
+        }
     }
 
-    void DebugLog(string msg)
+    public void ResetStats()
+    {
+        numOfPickups = 0;
+        score = 0;
+        numOfLives = 3;
+    }
+
+    public void IncreasePickup()
+    {
+        numOfPickups++;
+        score += 10;
+        if (numOfPickups == 10)
+        {
+            numOfPickups = 0;
+            numOfLives++;
+        }
+    }
+
+    public void DecreaseLife()
+    {
+        numOfLives--;
+    }
+
+    private void DebugLog(string msg)
     {
         // Output ball's velocity
         Debug.Log(msg);

@@ -6,7 +6,7 @@ public class UIController : MonoBehaviour
     private TextMeshProUGUI pickupText;
     private TextMeshProUGUI lifeText;
     private TextMeshProUGUI scoreText;
-    void Start()
+    private void Awake()
     {
         pickupText = GameObject.FindWithTag("Pickup").GetComponent<TextMeshProUGUI>();
         lifeText = GameObject.FindWithTag("Life").GetComponent<TextMeshProUGUI>();
