@@ -8,7 +8,6 @@ public class PlayerController : MonoBehaviour
     public int numOfPickups { get; private set; }
     public int numOfLives { get; private set; }
     public int score { get; private set; }
-    public UnityEvent<PlayerController> OnPickupCollected;
 
     private Rigidbody ball; // Reference to ball's rigibody
     private new Camera camera;  // Reference to the main camera
@@ -38,6 +37,10 @@ public class PlayerController : MonoBehaviour
         if (numOfLives != 0)
         {
             Move();
+        } 
+        else
+        {
+            GameManagement.manager.LoadScene("Main Scene");
         }
     }
 
@@ -45,6 +48,7 @@ public class PlayerController : MonoBehaviour
     {
         if (transform.position.y < respawnThreshold)
         {
+            // Die and stop further function
             Die();
             return;
         }
@@ -62,7 +66,6 @@ public class PlayerController : MonoBehaviour
     public void Pickup()
     {
         numOfPickups++;
-        UI.UpdatePickupText(numOfPickups);
         score += 10;
         if (numOfPickups == 2)
         {
@@ -71,14 +74,18 @@ public class PlayerController : MonoBehaviour
             UI.UpdateLifeText(numOfLives);
         }
         UI.UpdateScoreText(score);
-        OnPickupCollected.Invoke(this);
+        UI.UpdatePickupText(numOfPickups);
     }
 
     void Die()
     {
         numOfLives--;
         UI.UpdateLifeText(numOfLives);
+        // Respawn
         transform.position = respawnPoint;
+        // Resets forces and velocity
+        ball.isKinematic = true;
+        ball.isKinematic = false;
     }
 
     void DebugLog(string msg)

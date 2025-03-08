@@ -12,32 +12,39 @@ public class CameraControlller : MonoBehaviour
     void Start()
     {
         // Fetch the balls rigid body by tag
-        ball = GameObject.FindWithTag("Player").GetComponent<Rigidbody>();
+        GameObject ballReference = GameObject.FindWithTag("Player");
+        if (ballReference)
+        {
+            ball = ballReference.GetComponent<Rigidbody>();
+        }
     }
 
     void Update()
     {
-        // Get ball's direction
-        Vector3 targetDirection = new Vector3(ball.linearVelocity.x, 0, ball.linearVelocity.z).normalized;
-
-        // Delay the new direction vector 
-        currentDirection = Vector3.Slerp(currentDirection, targetDirection, Time.deltaTime * turnSpeed);
-        Vector3 targetPosition;
-
-        if (targetDirection != Vector3.zero)
+        if (ball != null)
         {
-            // Calcululate new camera position by adding the ball's position by the multiple of the change in direction by the offset (camera always behind the ball)
-            targetPosition = ball.position + Quaternion.LookRotation(targetDirection) * offset;
-        }
-        else
-        {
-            targetPosition = ball.position + offset;
-        }
+            // Get ball's direction
+            Vector3 targetDirection = new Vector3(ball.linearVelocity.x, 0, ball.linearVelocity.z).normalized;
 
-        // Transition to new position
-        transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * turnSpeed);
+            // Delay the new direction vector 
+            currentDirection = Vector3.Slerp(currentDirection, targetDirection, Time.deltaTime * turnSpeed);
+            Vector3 targetPosition;
 
-        // Look at center of ball for rotation
-        transform.LookAt(ball.position);
+            if (targetDirection != Vector3.zero)
+            {
+                // Calcululate new camera position by adding the ball's position by the multiple of the change in direction by the offset (camera always behind the ball)
+                targetPosition = ball.position + Quaternion.LookRotation(targetDirection) * offset;
+            }
+            else
+            {
+                targetPosition = ball.position + offset;
+            }
+
+            // Transition to new position
+            transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * turnSpeed);
+
+            // Look at center of ball for rotation
+            transform.LookAt(ball.position);
+        }
     }
 }
