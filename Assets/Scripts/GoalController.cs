@@ -9,6 +9,7 @@ public class GoalController : MonoBehaviour
         if (player != null)
         {
             // Player has contacted the goal
+            GameManagement.manager.IncreaseScore(player.remainingTime);
             GameManagement.manager.NextScene();
         }
     }

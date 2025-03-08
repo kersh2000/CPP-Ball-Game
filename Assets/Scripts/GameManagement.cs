@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 public class GameManagement : MonoBehaviour
 {
     public static GameManagement manager;
-    public int lives;
+    public int highestScore;
 
     public int numOfPickups { get; private set; }
     public int numOfLives { get; private set; }
@@ -69,6 +69,11 @@ public class GameManagement : MonoBehaviour
             numOfPickups = 0;
             numOfLives++;
         }
+    }
+
+    public void IncreaseScore(float addition)
+    {
+        score += Mathf.FloorToInt(addition)*2;
     }
 
     public void DecreaseLife()

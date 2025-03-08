@@ -6,7 +6,7 @@ public class PlayerController : MonoBehaviour
     public float speed = 0.5f;  // Base movement speed of the ball
     public float dragForce = 0.65f;  // Base drag to slow the ball down
 
-    private float remainingTime;
+    public float remainingTime;
     private Rigidbody ball; // Reference to ball's rigibody
     private new Camera camera;  // Reference to the main camera
     private UIController UI;
@@ -48,7 +48,6 @@ public class PlayerController : MonoBehaviour
             if (remainingTime <= 0)
             {
                 Die();
-                remainingTime = 30;
                 return;
             }
             Move();
@@ -96,6 +95,7 @@ public class PlayerController : MonoBehaviour
         // Resets forces and velocity
         ball.isKinematic = true;
         ball.isKinematic = false;
+        remainingTime = 30;
     }
 
     void DebugLog(string msg)
