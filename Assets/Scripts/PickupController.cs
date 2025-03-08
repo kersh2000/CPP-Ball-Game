@@ -13,8 +13,6 @@ public class PickupController : MonoBehaviour
         childTransform.transform.Rotate(0, 180 * Time.deltaTime, 0);
     }
 
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void OnTriggerEnter(Collider other)
     {
         PlayerController player = other.GetComponent<PlayerController>();
