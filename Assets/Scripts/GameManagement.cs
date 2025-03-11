@@ -23,7 +23,7 @@ public class GameManagement : MonoBehaviour
             {
             Destroy(gameObject);
         }
-        Application.targetFrameRate = 60;
+        Application.targetFrameRate = 120;
         scenesLength = SceneManager.sceneCountInBuildSettings;
     }
 

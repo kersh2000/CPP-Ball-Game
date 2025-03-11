@@ -73,7 +73,7 @@ public class PlayerController : MonoBehaviour
         // Find the vector from camera to input
         Vector3 direction = (camera.transform.TransformDirection(horizontalAxis, 0, verticalAxis));
 
-        float timeSpeed = speed * Time.deltaTime * 300;
+        float timeSpeed = 3f;
 
         // Add force to ball
         ball.AddForce(timeSpeed * direction.x, 0, timeSpeed * direction.z);
